@@ -1,4 +1,4 @@
-<#
+﻿<#
   CodeFestival language toolchain installer - winget bootstrap
   목적: Windows 10(1809+)에서 winget(App Installer) 오프라인/스크립트 설치
   참고: https://learn.microsoft.com/windows/package-manager/winget/
