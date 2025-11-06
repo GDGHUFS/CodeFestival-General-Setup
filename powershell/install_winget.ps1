@@ -1,4 +1,5 @@
-﻿﻿<#
+﻿
+<#
   CodeFestival language toolchain installer - winget bootstrap (deps-included)
   목적: Windows 10에서 winget(App Installer) 설치에 필요한
         1) VCLibs 14.00 UWP Desktop (x64)
