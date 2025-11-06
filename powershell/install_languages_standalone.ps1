@@ -105,56 +105,37 @@ Ensure-Dir $dl
 
 # ----------------- Java (OpenJDK 21.0.4) -----------------
 if(-not $SkipJava){
-  Write-Host "`n===== Java (OpenJDK 21.0.4) 설치 =====" -ForegroundColor Green
-  $requiredRegex = '21\.0\.4'
+  Write-Host "`n===== Java (OpenJDK 21.0.9+10) 설치 =====" -ForegroundColor Green
 
-  # 1) Adoptium API로 ZIP URL 시도 (버전=21.0.4+7 등)
-  function Get-TemurinZipUrl {
-      $api = "https://adoptium.net/download?link=https%3A%2F%2Fgithub.com%2Fadoptium%2Ftemurin21-binaries%2Freleases%2Fdownload%2Fjdk-21.0.9%252B10%2FOpenJDK21U-jdk_x64_windows_hotspot_21.0.9_10.zip&vendor=Adoptium"
-      try{
-        $json = Invoke-WebRequest -UseBasicParsing -Uri $api -TimeoutSec 180 | ConvertFrom-Json
-        foreach($asset in $json){
-          foreach($bin in $asset.binaries){
-            $link = $bin.package.link
-            if($link -and ($link -match '\.zip$')){ return $link }
-          }
-        }
-      }catch{ continue }
+  # 고정 다운로드 URL (요청사항)
+  $jdkUrl = "https://adoptium.net/download?link=https%3A%2F%2Fgithub.com%2Fadoptium%2Ftemurin21-binaries%2Freleases%2Fdownload%2Fjdk-21.0.9%252B10%2FOpenJDK21U-jdk_x64_windows_hotspot_21.0.9_10.zip&vendor=Adoptium"
+  $requiredRegex = '21\.0\.9'   # 검증: java -version 출력에 21.0.9 포함
 
-    return $null
-  }
-
-  $zipUrl = Get-TemurinZipUrl
-  if(-not $zipUrl){
-    # 2) API 실패시 다운로드 페이지에서 21.0.4 zip 추출(보수적 정규식)
-    Write-Warn "Adoptium API 실패. 웹페이지 파싱 시도."
-    try{
-      $page = (Invoke-WebRequest -UseBasicParsing -Uri "https://adoptium.net/temurin/releases/?version=21" -TimeoutSec 180).Content
-      $m = [regex]::Match($page, 'https?://[^\s"]*jdk[^\s"]*21\.0\.4[^\s"]*windows[^\s"]*x64[^\s"]*hotspot[^\s"]*\.zip', 'IgnoreCase')
-      if($m.Success){ $zipUrl = $m.Value }
-    }catch{}
-  }
-  if(-not $zipUrl){ throw "OpenJDK 21.0.4 ZIP 링크를 찾지 못했습니다." }
-
-  $zipName = Split-Path $zipUrl -Leaf
+  # 다운로드 고정: 실패 시 즉시 오류(다른 대체 루트 없음)
+  $zipName = "OpenJDK21U-jdk_x64_windows_hotspot_21.0.9_10.zip"
   $zipPath = Join-Path $dl $zipName
-  if(-not (Test-Path $zipPath)){ Download-File $zipUrl $zipPath }
+  if(Test-Path $zipPath){ Remove-Item $zipPath -Force -ErrorAction SilentlyContinue }
+  Write-Info "OpenJDK ZIP 다운로드 (고정 URL만 사용)"
+  Download-File $jdkUrl $zipPath  # Download-File 내부에서 실패 시 throw
 
-  # 압축 풀기
-  $javaRoot = Join-Path $InstallDir "jdk-21.0.4"
+  # 압축 해제 (내용물 루트 폴더명은 릴리스에 따라 다를 수 있으므로 재귀로 bin 탐색)
+  $javaRoot = Join-Path $InstallDir "jdk-21.0.9"
+  if(Test-Path $javaRoot){ Remove-Item $javaRoot -Recurse -Force -ErrorAction SilentlyContinue }
   Ensure-Dir $javaRoot
   Expand-AnyArchive $zipPath $javaRoot
 
-  # bin 검색 및 PATH 추가
+  # bin 디렉터리 탐색
   $javabins = Get-ChildItem -Recurse -Directory $javaRoot -Filter "bin" -ErrorAction SilentlyContinue
-  $javaBinDir = $null
-  if($javabins.Count -gt 0){ $javaBinDir = $javabins[0].FullName }
-  if(-not $javaBinDir){ throw "JDK bin 디렉토리를 찾지 못했습니다." }
+  if(-not $javabins -or $javabins.Count -eq 0){
+    throw "JDK bin 디렉터리를 찾지 못했습니다. 압축 구조를 확인하세요."
+  }
+  $javaBinDir = $javabins[0].FullName
   Add-ToPath $javaBinDir -SystemLevel:$SystemPath
 
-  # 버전 검증 & JAVA_HOME 설정
-  $verOut = Verify-Version { java -version } $requiredRegex "Java(OpenJDK)"
-  # JAVA_HOME=bin 상위
+  # 버전 검증 (반드시 21.0.9 포함)
+  $verOut = Verify-Version { java -version } $requiredRegex "Java(OpenJDK 21.0.9+10)"
+
+  # JAVA_HOME 설정(bin 상위)
   $javaHome = [IO.Directory]::GetParent($javaBinDir).FullName
   [Environment]::SetEnvironmentVariable("JAVA_HOME",$javaHome,[EnvironmentVariableTarget]::User)
   if($SystemPath){ [Environment]::SetEnvironmentVariable("JAVA_HOME",$javaHome,[EnvironmentVariableTarget]::Machine) }
