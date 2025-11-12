@@ -2,17 +2,18 @@ import csv
 import json
 import sys
 import time
+from pathlib import Path
 from typing import Dict, Any, Optional, Tuple, List
 import requests
 
-CSV_PATH = "./dummy2.csv" # 변경 필수
 REQUEST_TIMEOUT = 20  # seconds
 
 class ApiError(Exception):
     pass
 
 
-def prompt_admin_and_target() -> Tuple[str, str, str, str, bool]:
+def prompt_admin_and_target() -> Tuple[str, str, str, str, bool, Path]:
+    csv_path = Path(input("csv 파일 이름을 입력하세요: ").strip())
     base_url = input(f"DOMjudge Base URL [예: https://ps.gdghufs.com]: ").strip()
     admin_user = input("Admin username: ").strip()
     admin_pass = input("Admin password: ").strip()
@@ -24,7 +25,7 @@ def prompt_admin_and_target() -> Tuple[str, str, str, str, bool]:
         use_ip_strict = False
     if not (base_url and admin_user and admin_pass and cid):
         raise SystemExit("입력이 부족합니다. Base URL, 관리자 계정, 대회ID, 사용자별 접속 제한은 필수입니다.")
-    return base_url.rstrip("/"), admin_user, admin_pass, cid, use_ip_strict
+    return base_url.rstrip("/"), admin_user, admin_pass, cid, use_ip_strict, csv_path
 
 
 def new_session(admin_user: str, admin_pass: str) -> requests.Session:
@@ -165,7 +166,7 @@ def create_user_for_team(s: requests.Session, base_url: str, username: str, pass
 
 
 def main():
-    base_url, admin_user, admin_pass, cid, use_ip_strict = prompt_admin_and_target()
+    base_url, admin_user, admin_pass, cid, use_ip_strict, csv_path = prompt_admin_and_target()
     sess = new_session(admin_user, admin_pass)
 
     try:
@@ -174,7 +175,7 @@ def main():
         print(f"API 점검 실패: {e}")
         sys.exit(2)
 
-    participants = load_csv(CSV_PATH)
+    participants = load_csv(csv_path)
     if not participants:
         print("처리할 참가자가 없습니다.")
         return
