@@ -131,7 +131,7 @@ def convert(
                     continue
                 seen_usernames.add(username)
 
-                pwd = generate_password(password_len)  # 필요시 generate_pasword로 교체 가능
+                pwd = generate_password(password_len)
                 tid = next_tid()
 
                 writer.writerow([username, pwd, tid])

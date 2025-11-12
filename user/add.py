@@ -130,7 +130,7 @@ def create_user_for_team(s: requests.Session, base_url: str, username: str, pass
     """
     url = f"{base_url}/api/v4/users"
     if use_ip_strict:
-        ip = input(f"{username}의 IP 주소를 입력하십시오: ").strip();
+        ip = input(f"{username}의 IP 주소를 입력하십시오: ").strip()
         payload = {
             "username": username,
             "name": username,
