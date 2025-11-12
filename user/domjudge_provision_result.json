@@ -1,41 +1,41 @@
 [
   {
-    "username": "손재혁",
-    "name": "손재혁(컴퓨터공학부)",
-    "team_id": "110",
-    "user_id": "109",
+    "username": "김미진(컴퓨터공학부)",
+    "name": "김미진(컴퓨터공학부)",
+    "team_id": "120",
+    "user_id": "119",
     "team_status": "created",
     "user_status": "created"
   },
   {
-    "username": "정원철",
-    "name": "정원철(컴퓨터공학부)",
-    "team_id": "111",
-    "user_id": "110",
+    "username": "하수연(GBT)",
+    "name": "하수연(GBT)",
+    "team_id": "121",
+    "user_id": "120",
     "team_status": "created",
     "user_status": "created"
   },
   {
-    "username": "강대현",
-    "name": "강대현(컴퓨터공학부)",
-    "team_id": "112",
-    "user_id": "111",
+    "username": "김예지(컴퓨터공학부)",
+    "name": "김예지(컴퓨터공학부)",
+    "team_id": "122",
+    "user_id": "121",
     "team_status": "created",
     "user_status": "created"
   },
   {
-    "username": "김경록",
-    "name": "김경록(컴퓨터공학부)",
-    "team_id": "113",
-    "user_id": "112",
+    "username": "조혜린(컴퓨터공학부)",
+    "name": "조혜린(컴퓨터공학부)",
+    "team_id": "123",
+    "user_id": "122",
     "team_status": "created",
     "user_status": "created"
   },
   {
-    "username": "김민수",
-    "name": "김민수(아랍어통번역학과)",
-    "team_id": "114",
-    "user_id": "113",
+    "username": "박주은(컴퓨터공학부)",
+    "name": "박주은(컴퓨터공학부)",
+    "team_id": "124",
+    "user_id": "123",
     "team_status": "created",
     "user_status": "created"
   }
