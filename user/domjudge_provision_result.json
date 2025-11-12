@@ -1,0 +1,42 @@
+[
+  {
+    "username": "손재혁(컴퓨터공학부)",
+    "name": "손재혁(컴퓨터공학부)",
+    "team_id": "125",
+    "user_id": "124",
+    "team_status": "created",
+    "user_status": "created"
+  },
+  {
+    "username": "정원철(컴퓨터공학부)",
+    "name": "정원철(컴퓨터공학부)",
+    "team_id": "126",
+    "user_id": "125",
+    "team_status": "created",
+    "user_status": "created"
+  },
+  {
+    "username": "강대현(컴퓨터공학부)",
+    "name": "강대현(컴퓨터공학부)",
+    "team_id": "127",
+    "user_id": "126",
+    "team_status": "created",
+    "user_status": "created"
+  },
+  {
+    "username": "김경록(컴퓨터공학부)",
+    "name": "김경록(컴퓨터공학부)",
+    "team_id": "128",
+    "user_id": "127",
+    "team_status": "created",
+    "user_status": "created"
+  },
+  {
+    "username": "김민수(아랍어통번역학과)",
+    "name": "김민수(아랍어통번역학과)",
+    "team_id": "129",
+    "user_id": "128",
+    "team_status": "created",
+    "user_status": "created"
+  }
+]
