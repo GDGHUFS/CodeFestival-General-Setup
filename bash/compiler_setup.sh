@@ -18,6 +18,7 @@ cd Python-3.9.17
 ./configure --prefix=/opt/cf-env/python39 --enable-optimizations
 make -j$(nproc)
 make install
+ln -s /opt/cf-env/python39/bin/python3 /opt/cf-env/bin/cf-python
 cf-python --version
 echo "Python 설치를 완료했습니다."
 

@@ -4,8 +4,8 @@ sudo chown -R $USER:$USER /opt/cf-env
 
 echo "export PATH=\"/opt/cf-env/bin:\$PATH\"" >> ~/.bashrc
 
-sudo dnf update
-sudo dnf upgrade
+sudo dnf update -y
+sudo dnf upgrade -y
 sudo dnf group install "development-tools" -y
 sudo dnf install -y \
     ibm-plex-mono-fonts \
